@@ -2648,7 +2648,6 @@ You can also read the articles on [this blog][hypermodern python blog].
 [hypermodern python cookiecutter]: https://github.com/cjolowicz/cookiecutter-hypermodern-python
 [hypermodern python]: https://medium.com/@cjolowicz/hypermodern-python-d44485d9d769
 [import hook]: https://docs.python.org/3/reference/import.html#import-hooks
-[install-poetry.py]: https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py
 [isort black profile]: https://pycqa.github.io/isort/docs/configuration/black_compatibility.html
 [isort force_single_line]: https://pycqa.github.io/isort/docs/configuration/options.html#force-single-line
 [isort lines_after_imports]: https://pycqa.github.io/isort/docs/configuration/options.html#lines-after-imports
