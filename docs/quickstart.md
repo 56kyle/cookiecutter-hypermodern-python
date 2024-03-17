@@ -8,7 +8,6 @@ Install [Cookiecutter]:
 $ pipx install cookiecutter
 ```
 
-
 Install [Poetry], [Nox], and [nox-poetry]:
 
 ```console
