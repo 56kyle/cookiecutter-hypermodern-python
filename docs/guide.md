@@ -98,15 +98,15 @@ python -VV
 py -VV
 ```
 
-Both of these commands should display the latest Python version, 3.10.
+Both of these commands should display the latest Python version, 3.12.
 
 For local testing with multiple Python versions,
-repeat these steps for the latest bugfix releases of Python 3.7+,
+repeat these steps for the latest bugfix releases of Python 3.9+,
 with the following changes:
 
 - Do _not_ enable the option to add Python to the `PATH` environment variable.
 - `py -VV` and `python -VV` should still display the version of the latest stable release.
-- `py -X.Y -VV` (e.g. `py -3.7 -VV`) should display the exact version you just installed.
+- `py -X.Y -VV` (e.g. `py -3.9 -VV`) should display the exact version you just installed.
 
 Note that binary installers are not provided for security releases.
 
@@ -137,13 +137,13 @@ Install the Python build dependencies for your platform,
 using one of the commands listed in the [official instructions][pyenv wiki].
 
 Install the latest point release of every supported Python version.
-This project template supports Python 3.7, 3.8, 3.9, and 3.10.
+This project template supports Python 3.9, 3.10, 3.11, and 3.12.
 
 ```console
-$ pyenv install 3.7.12
-$ pyenv install 3.8.12
-$ pyenv install 3.9.10
-$ pyenv install 3.10.2
+$ pyenv install 3.9.13
+$ pyenv install 3.10.11
+$ pyenv install 3.11.8
+$ pyenv install 3.12.2
 ```
 
 After creating your project (see [below](creating-a-project)),
@@ -151,12 +151,12 @@ you can make these Python versions accessible in the project directory,
 using the following command:
 
 ```console
-$ pyenv local 3.10.2 3.9.10 3.8.12 3.7.12
+$ pyenv local 3.12.2 3.11.8 3.10.11 3.9.13
 ```
 
 The first version listed is the one used when you type plain `python`.
 Every version can be used by invoking `python<major.minor>`.
-For example, use `python3.7` to invoke Python 3.7.
+For example, use `python3.9` to invoke Python 3.9.
 
 ### Requirements
 
@@ -182,15 +182,10 @@ Install [Cookiecutter] using pipx:
 $ pipx install cookiecutter
 ```
 
-Install [Poetry] by downloading and running [install-poetry.py]:
+Install [Poetry], [Nox], and [nox-poetry] using pipx:
 
 ```console
-$ python install-poetry.py
-```
-
-Install [Nox] and [nox-poetry] using pipx:
-
-```console
+$ pipx install poetry
 $ pipx install nox
 $ pipx inject nox nox-poetry
 ```
@@ -981,14 +976,14 @@ for every Python version supported by your project,
 and easily switch between them:
 
 ```console
-$ poetry env use 3.7
-$ poetry env use 3.8
 $ poetry env use 3.9
 $ poetry env use 3.10
+$ poetry env use 3.11
+$ poetry env use 3.12
 ```
 
 Only one Poetry environment can be active at any time.
-Note that `3.10` comes last,
+Note that `3.12` comes last,
 to ensure that the current Python release is the active environment.
 Install your package with `poetry install` into each environment after creating it.
 
@@ -1161,7 +1156,7 @@ For example, the following may be more practical during development
 (this will only run tests and type checks, on the current Python release):
 
 ```console
-$ nox -p 3.10 -rs tests mypy
+$ nox -p 3.12 -rs tests mypy
 ```
 
 Many sessions accept additional options after `--` separator.
@@ -1187,39 +1182,39 @@ The following table gives an overview of the available Nox sessions:
   - Default
 - - [coverage](the-coverage-session)
   - Report coverage with [Coverage.py]
-  - `3.10`
+  - `3.12`
   - (✓)
 - - [docs](the-docs-session)
   - Build and serve [Sphinx] documentation
-  - `3.10`
+  - `3.12`
   -
 - - [docs-build](the-docs-build-session)
   - Build [Sphinx] documentation
-  - `3.10`
+  - `3.12`
   - ✓
 - - [mypy](the-mypy-session)
   - Type-check with [mypy]
-  - `3.7` … `3.10`
+  - `3.9` … `3.12`
   - ✓
 - - [pre-commit](the-pre-commit-session)
   - Lint with [pre-commit]
-  - `3.10`
+  - `3.12`
   - ✓
 - - [safety](the-safety-session)
   - Scan dependencies with [Safety]
-  - `3.10`
+  - `3.12`
   - ✓
 - - [tests](the-tests-session)
   - Run tests with [pytest]
-  - `3.7` … `3.10`
+  - `3.9` … `3.12`
   - ✓
 - - [typeguard](the-typeguard-session)
   - Type-check with [Typeguard]
-  - `3.10`
+  - `3.12`
   - ✓
 - - [xdoctest](the-xdoctest-session)
   - Run examples with [xdoctest]
-  - `3.7` … `3.10`
+  - `3.9` … `3.12`
   - ✓
 
 :::
@@ -1279,7 +1274,7 @@ For example, the following command runs mypy
 using the current stable release of Python:
 
 ```console
-$ nox --session=mypy --python=3.10
+$ nox --session=mypy --python=3.12
 ```
 
 Use the separator `--` to pass additional options and arguments to `mypy`.
@@ -1353,7 +1348,7 @@ For example, the following command runs the test suite
 using the current stable release of Python:
 
 ```console
-$ nox --session=tests --python=3.10
+$ nox --session=tests --python=3.12
 ```
 
 Use the separator `--` to pass additional options to `pytest`.
@@ -1480,7 +1475,7 @@ For example, the following command runs the examples
 using the current stable release of Python:
 
 ```console
-$ nox --session=xdoctest --python=3.10
+$ nox --session=xdoctest --python=3.12
 ```
 
 By default, the Nox session uses the `all` subcommand to run all examples.
@@ -2274,28 +2269,28 @@ as shown in the table below:
   - Python versions
 - - [pre-commit](the-pre-commit-session)
   - Ubuntu
-  - 3.10
+  - 3.12
 - - [safety](the-safety-session)
   - Ubuntu
-  - 3.10
+  - 3.12
 - - [mypy](the-mypy-session)
   - Ubuntu
-  - 3.10, 3.9, 3.8, 3.7
+  - 3.12, 3.11, 3.10, 3.9
 - - [tests](the-tests-session)
   - Ubuntu
-  - 3.10, 3.9, 3.8, 3.7
+  - 3.12, 3.11, 3.10, 3.9
 - - [tests](the-tests-session)
   - Windows
-  - 3.10
+  - 3.12
 - - [tests](the-tests-session)
   - macOS
-  - 3.10
+  - 3.12
 - - [coverage](the-coverage-session)
   - Ubuntu
-  - 3.10
+  - 3.12
 - - [docs-build](the-docs-build-session)
   - Ubuntu
-  - 3.10
+  - 3.12
 
 :::
 
@@ -2625,7 +2620,7 @@ You can also read the articles on [this blog][hypermodern python blog].
 [flake8-bandit]: https://github.com/tylerwince/flake8-bandit
 [flake8-bugbear codes]: https://github.com/PyCQA/flake8-bugbear#list-of-warnings
 [flake8-bugbear]: https://github.com/PyCQA/flake8-bugbear
-[flake8-docstrings]: https://gitlab.com/pycqa/flake8-docstrings
+[flake8-docstrings]: https://github.com/pycqa/flake8-docstrings
 [flake8-rst-docstrings codes]: https://github.com/peterjc/flake8-rst-docstrings#flake8-validation-codes
 [flake8-rst-docstrings]: https://github.com/peterjc/flake8-rst-docstrings
 [flake8]: http://flake8.pycqa.org
@@ -2653,7 +2648,6 @@ You can also read the articles on [this blog][hypermodern python blog].
 [hypermodern python cookiecutter]: https://github.com/cjolowicz/cookiecutter-hypermodern-python
 [hypermodern python]: https://medium.com/@cjolowicz/hypermodern-python-d44485d9d769
 [import hook]: https://docs.python.org/3/reference/import.html#import-hooks
-[install-poetry.py]: https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py
 [isort black profile]: https://pycqa.github.io/isort/docs/configuration/black_compatibility.html
 [isort force_single_line]: https://pycqa.github.io/isort/docs/configuration/options.html#force-single-line
 [isort lines_after_imports]: https://pycqa.github.io/isort/docs/configuration/options.html#lines-after-imports
@@ -2711,7 +2705,7 @@ You can also read the articles on [this blog][hypermodern python blog].
 [pypa/gh-action-pypi-publish]: https://github.com/pypa/gh-action-pypi-publish
 [pypi]: https://pypi.org/
 [pyproject.toml]: https://python-poetry.org/docs/pyproject/
-[pytest layout]: https://docs.pytest.org/en/latest/explanation/goodpractices.html#choosing-a-test-layout-import-rules
+[pytest layout]: https://docs.pytest.org/en/latest/explanation/goodpractices.html#choosing-a-test-layout
 [pytest]: https://docs.pytest.org/en/latest/
 [python build]: https://python-poetry.org/docs/cli/#build
 [python package]: https://docs.python.org/3/tutorial/modules.html#packages

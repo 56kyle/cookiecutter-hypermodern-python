@@ -8,22 +8,17 @@ Install [Cookiecutter]:
 $ pipx install cookiecutter
 ```
 
-Install [Poetry] by downloading and running [install-poetry.py]:
+Install [Poetry], [Nox], and [nox-poetry]:
 
 ```console
-$ python install-poetry.py
-```
-
-Install [Nox] and [nox-poetry]:
-
-```console
+$ pipx install poetry
 $ pipx install nox
 $ pipx inject nox nox-poetry
 ```
 
 [pipx] is preferred, but you can also install with `pip install --user`.
 
-It is recommended to set up Python 3.7, 3.8, 3.9, 3.10 using [pyenv].
+It is recommended to set up Python 3.9, 3.10, 3.11, and 3.12 using [pyenv].
 
 ## Creating a project
 
@@ -159,7 +154,6 @@ by applying labels to them, like this:
 [codecov]: https://codecov.io/
 [cookiecutter]: https://github.com/audreyr/cookiecutter
 [github]: https://github.com/
-[install-poetry.py]: https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py
 [nox]: https://nox.thea.codes/
 [nox-poetry]: https://nox-poetry.readthedocs.io/
 [pipx]: https://pipxproject.github.io/pipx/

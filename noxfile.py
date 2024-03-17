@@ -1,4 +1,5 @@
 """Nox sessions."""
+
 from pathlib import Path
 import shutil
 
