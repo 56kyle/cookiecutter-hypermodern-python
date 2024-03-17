@@ -2625,7 +2625,7 @@ You can also read the articles on [this blog][hypermodern python blog].
 [flake8-bandit]: https://github.com/tylerwince/flake8-bandit
 [flake8-bugbear codes]: https://github.com/PyCQA/flake8-bugbear#list-of-warnings
 [flake8-bugbear]: https://github.com/PyCQA/flake8-bugbear
-[flake8-docstrings]: https://gitlab.com/pycqa/flake8-docstrings
+[flake8-docstrings]: https://github.com/pycqa/flake8-docstrings
 [flake8-rst-docstrings codes]: https://github.com/peterjc/flake8-rst-docstrings#flake8-validation-codes
 [flake8-rst-docstrings]: https://github.com/peterjc/flake8-rst-docstrings
 [flake8]: http://flake8.pycqa.org
