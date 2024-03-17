@@ -2711,7 +2711,7 @@ You can also read the articles on [this blog][hypermodern python blog].
 [pypa/gh-action-pypi-publish]: https://github.com/pypa/gh-action-pypi-publish
 [pypi]: https://pypi.org/
 [pyproject.toml]: https://python-poetry.org/docs/pyproject/
-[pytest layout]: https://docs.pytest.org/en/latest/explanation/goodpractices.html#choosing-a-test-layout-import-rules
+[pytest layout]: https://docs.pytest.org/en/latest/explanation/goodpractices.html#choosing-a-test-layout
 [pytest]: https://docs.pytest.org/en/latest/
 [python build]: https://python-poetry.org/docs/cli/#build
 [python package]: https://docs.python.org/3/tutorial/modules.html#packages
