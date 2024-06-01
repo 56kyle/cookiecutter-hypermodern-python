@@ -24,7 +24,7 @@ git push
 
 :: Creates first release
 git -c credential.helper= -c core.quotepath=false -c log.showSignature=false checkout -b release/0.0.1 develop^0 --
-poetry bump minor
+poetry version patch
 git add .
 git commit -m "Bumps version to 0.0.1."
 git push -u origin release/0.0.1
