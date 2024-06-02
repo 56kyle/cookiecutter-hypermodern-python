@@ -10,6 +10,7 @@ git push -u origin main
 
 :: Install poetry
 poetry env use %PYTHON39%
+poetry shell
 poetry install --with dev
 poetry build
 
