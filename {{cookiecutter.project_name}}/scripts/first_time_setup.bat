@@ -13,8 +13,12 @@ git -c credential.helper= -c core.quotepath=false -c log.showSignature=false che
 git push -u origin develop
 
 :: Install poetry
+poetry env use %PYTHON39%
 poetry install --with dev
 poetry build
+
+:: Install pre-commit hooks
+nox -s pre-commit -- install
 
 :: Update poetry.lock
 poetry update
