@@ -4,12 +4,29 @@ from pathlib import Path
 import shutil
 
 import nox
+import platformdirs
 from nox.sessions import Session
+
 
 nox.options.sessions = ["docs"]
 owner, repository = "cjolowicz", "cookiecutter-hypermodern-python"
 labels = "cookiecutter", "documentation"
 bump_paths = "README.md", "docs/guide.rst", "docs/index.rst", "docs/quickstart.md"
+
+REPO_ROOT: Path = Path(__file__).parent
+NEXTGEN_STARTER_CACHE_FOLDER: Path = platformdirs.user_cache_path(
+    appname="cookiecutter-hypermodern-python",
+    appauthor="56kyle",
+    ensure_exists=True
+)
+
+PROJECT_DEMOS_FOLDER: Path = NEXTGEN_STARTER_CACHE_FOLDER / "project_demos"
+DEFAULT_DEMO_NAME: str = "demo-project"
+
+
+@nox.session(name="generate-demo-project")
+def generate_demo_project(session: Session) -> Session:
+    pass
 
 
 @nox.session(name="prepare-release")
