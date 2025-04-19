@@ -6,7 +6,6 @@ from pathlib import Path
 import click
 
 from cookiecutter.main import cookiecutter
-from loguru import logger
 
 
 FOLDER_TYPE: click.Path = click.Path(
