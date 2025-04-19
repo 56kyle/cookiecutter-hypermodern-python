@@ -1,5 +1,7 @@
 """Nox sessions."""
 
+from __future__ import annotations
+
 from pathlib import Path
 import shutil
 
@@ -8,25 +10,97 @@ import platformdirs
 from nox.sessions import Session
 
 
+python_versions = ["3.12", "3.11", "3.10", "3.9"]
+
 nox.options.sessions = ["docs"]
-owner, repository = "cjolowicz", "cookiecutter-hypermodern-python"
+owner, repository = "56kyle", "cookiecutter-hypermodern-python"
 labels = "cookiecutter", "documentation"
 bump_paths = "README.md", "docs/guide.rst", "docs/index.rst", "docs/quickstart.md"
 
-REPO_ROOT: Path = Path(__file__).parent
-NEXTGEN_STARTER_CACHE_FOLDER: Path = platformdirs.user_cache_path(
-    appname="cookiecutter-hypermodern-python",
-    appauthor="56kyle",
-    ensure_exists=True
+REPO_ROOT: Path = Path(__file__).parent.resolve()
+TEMPLATE_FOLDER: Path = REPO_ROOT / "{{cookiecutter.project_name}}"
+
+
+COOKIECUTTER_HYPERMODERN_PYTHON_CACHE_FOLDER: Path = Path(
+    platformdirs.user_cache_path(
+        appname="cookiecutter-hypermodern-python",
+        appauthor="56kyle",
+        ensure_exists=True,
+    )
+).resolve()
+
+PROJECT_DEMOS_FOLDER: Path = COOKIECUTTER_HYPERMODERN_PYTHON_CACHE_FOLDER / "project_demos"
+DEFAULT_DEMO_NAME: str = "demo-project"
+DEMO_ROOT_FOLDER: Path = PROJECT_DEMOS_FOLDER / DEFAULT_DEMO_NAME
+
+GENERATE_DEMO_PROJECT_OPTIONS: tuple[str, ...] = (
+    *("--repo-folder", REPO_ROOT),
+    *("--demos-cache-folder", PROJECT_DEMOS_FOLDER),
+    *("--demo-name", DEFAULT_DEMO_NAME),
 )
 
-PROJECT_DEMOS_FOLDER: Path = NEXTGEN_STARTER_CACHE_FOLDER / "project_demos"
-DEFAULT_DEMO_NAME: str = "demo-project"
+SYNC_POETRY_WITH_DEMO_OPTIONS: tuple[str, ...] = (
+    *("--template-folder", TEMPLATE_FOLDER),
+    *("--demos-cache-folder", PROJECT_DEMOS_FOLDER),
+    *("--demo-name", DEFAULT_DEMO_NAME),
+)
 
 
-@nox.session(name="generate-demo-project")
-def generate_demo_project(session: Session) -> Session:
-    pass
+@nox.session(name="generate-demo-project", python=python_versions[-1])
+def generate_demo_project(session: Session) -> None:
+    session.install("cookiecutter", "platformdirs", "loguru")
+    session.run(
+        "python",
+        "tools/generate-demo-project.py",
+        *GENERATE_DEMO_PROJECT_OPTIONS,
+        external=True,
+    )
+
+
+@nox.session(name="sync-poetry-with-demo", python=python_versions[-1])
+def sync_poetry_with_demo(session: Session) -> None:
+    session.install("cookiecutter", "platformdirs", "loguru")
+    session.run(
+        "python",
+        "tools/sync-poetry-with-demo.py",
+        *SYNC_POETRY_WITH_DEMO_OPTIONS,
+        external=True,
+    )
+
+
+@nox.session(name="poetry-in-demo", python=python_versions[-1])
+def poetry_in_demo(session: Session) -> None:
+    session.install("cookiecutter", "platformdirs", "loguru")
+    session.run(
+        "python",
+        "tools/generate-demo-project.py",
+        *GENERATE_DEMO_PROJECT_OPTIONS,
+        external=True,
+    )
+    original_dir: Path = Path.cwd()
+    session.cd(DEMO_ROOT_FOLDER)
+    session.run("poetry", *session.posargs)
+    session.cd(original_dir)
+    session.run(
+        "python",
+        "tools/sync-poetry-with-demo.py",
+        *SYNC_POETRY_WITH_DEMO_OPTIONS,
+        external=True,
+    )
+
+
+@nox.session(name="poetry-lock")
+def poetry_lock(session: Session) -> None:
+    """Shorthand for poetry-in-demo -- lock."""
+    session._runner.posargs = ["lock", *session.posargs]
+    poetry_in_demo(session)
+
+
+@nox.session(name="poetry-update")
+def poetry_update(session: Session) -> None:
+    """Shorthand for poetry-in-demo -- update."""
+    session._runner.posargs = ["update", *session.posargs]
+    poetry_in_demo(session)
 
 
 @nox.session(name="prepare-release")
@@ -77,7 +151,14 @@ def docs(session: Session) -> None:
 @nox.session
 def linkcheck(session: Session) -> None:
     """Build the documentation."""
-    args = session.posargs or ["-b", "linkcheck", "-W", "--keep-going", "docs", "docs/_build"]
+    args = session.posargs or [
+        "-b",
+        "linkcheck",
+        "-W",
+        "--keep-going",
+        "docs",
+        "docs/_build",
+    ]
 
     builddir = Path("docs", "_build")
     if builddir.exists():

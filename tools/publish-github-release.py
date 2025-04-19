@@ -13,18 +13,14 @@ def publish_release(*, owner: str, repository_name: str, token: str, tag: str) -
     try:
         [pull_request] = list(repository.pull_requests(head=f"{owner}:release-{tag}"))
     except ValueError:
-        raise RuntimeError(
-            f"there should be exactly one pull request for {owner}:release-{tag}"
-        )
+        raise RuntimeError(f"there should be exactly one pull request for {owner}:release-{tag}")
 
     pull_request = repository.pull_request(pull_request.number)
 
     try:
         [*_, commit] = pull_request.commits()
     except ValueError:
-        raise RuntimeError(
-            f"there should be at least one commit associated with #{pull_request.number}"
-        )
+        raise RuntimeError(f"there should be at least one commit associated with #{pull_request.number}")
 
     try:
         [release] = [release for release in repository.releases() if release.draft]

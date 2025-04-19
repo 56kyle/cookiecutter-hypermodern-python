@@ -53,8 +53,7 @@ def activate_virtualenv_in_precommit_hooks(session: Session) -> None:
     # quoting rules for Python and bash, but strip the outermost quotes so we
     # can detect paths within the bindir, like <bindir>/python.
     bindirs = [
-        bindir[1:-1] if bindir[0] in "'\"" else bindir
-        for bindir in (repr(session.bin), shlex.quote(session.bin))
+        bindir[1:-1] if bindir[0] in "'\"" else bindir for bindir in (repr(session.bin), shlex.quote(session.bin))
     ]
 
     virtualenv = session.env.get("VIRTUAL_ENV")
@@ -96,10 +95,7 @@ def activate_virtualenv_in_precommit_hooks(session: Session) -> None:
 
         text = hook.read_text()
 
-        if not any(
-            Path("A") == Path("a") and bindir.lower() in text.lower() or bindir in text
-            for bindir in bindirs
-        ):
+        if not any((Path("A") == Path("a") and bindir.lower() in text.lower()) or bindir in text for bindir in bindirs):
             continue
 
         lines = text.splitlines()
@@ -121,18 +117,12 @@ def precommit(session: Session) -> None:
         "--show-diff-on-failure",
     ]
     session.install(
-        "bandit",
         "black",
         "darglint",
-        "flake8",
-        "flake8-bugbear",
-        "flake8-docstrings",
-        "flake8-rst-docstrings",
-        "isort",
+        "ruff",
         "pep8-naming",
         "pre-commit",
         "pre-commit-hooks",
-        "pyupgrade",
     )
     session.run("pre-commit", *args)
     if args and args[0] == "install":
@@ -143,8 +133,8 @@ def precommit(session: Session) -> None:
 def safety(session: Session) -> None:
     """Scan dependencies for insecure packages."""
     requirements = session.poetry.export_requirements()
-    session.install("safety")
-    session.run("safety", "check", "--full-report", f"--file={requirements}")
+    session.install("pip-audit")
+    session.run("pip-audit", "-r", str(requirements))
 
 
 @session(python=python_versions)
@@ -162,7 +152,7 @@ def mypy(session: Session) -> None:
 def tests(session: Session) -> None:
     """Run the test suite."""
     session.install(".")
-    session.install("coverage[toml]", "pytest", "pygments")
+    session.install("coverage", "pytest", "pygments")
     try:
         session.run("coverage", "run", "--parallel", "-m", "pytest", *session.posargs)
     finally:
@@ -175,7 +165,7 @@ def coverage(session: Session) -> None:
     """Produce the coverage report."""
     args = session.posargs or ["report"]
 
-    session.install("coverage[toml]")
+    session.install("coverage")
 
     if not session.posargs and any(Path().glob(".coverage.*")):
         session.run("coverage", "combine")
