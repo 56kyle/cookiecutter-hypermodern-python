@@ -138,7 +138,7 @@ def safety(session: Session) -> None:
     """Scan dependencies for insecure packages."""
     requirements = session.poetry.export_requirements()
     session.install("pip-audit")
-    session.run("pip-audit", "-r", requirements)
+    session.run("pip-audit", "-r", str(requirements))
 
 
 @session(python=python_versions)
