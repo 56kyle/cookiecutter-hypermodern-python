@@ -15,9 +15,7 @@ bump_paths = "README.md", "docs/guide.rst", "docs/index.rst", "docs/quickstart.m
 
 REPO_ROOT: Path = Path(__file__).parent
 NEXTGEN_STARTER_CACHE_FOLDER: Path = platformdirs.user_cache_path(
-    appname="cookiecutter-hypermodern-python",
-    appauthor="56kyle",
-    ensure_exists=True
+    appname="cookiecutter-hypermodern-python", appauthor="56kyle", ensure_exists=True
 )
 
 PROJECT_DEMOS_FOLDER: Path = NEXTGEN_STARTER_CACHE_FOLDER / "project_demos"
@@ -77,7 +75,14 @@ def docs(session: Session) -> None:
 @nox.session
 def linkcheck(session: Session) -> None:
     """Build the documentation."""
-    args = session.posargs or ["-b", "linkcheck", "-W", "--keep-going", "docs", "docs/_build"]
+    args = session.posargs or [
+        "-b",
+        "linkcheck",
+        "-W",
+        "--keep-going",
+        "docs",
+        "docs/_build",
+    ]
 
     builddir = Path("docs", "_build")
     if builddir.exists():
