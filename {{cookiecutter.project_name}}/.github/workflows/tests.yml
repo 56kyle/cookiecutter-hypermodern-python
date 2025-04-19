@@ -99,9 +99,10 @@ jobs:
         if: always() && matrix.session == 'tests'
         uses: "actions/upload-artifact@v3"
         with:
-          name: coverage-data
+          name: coverage-data-${{ runner.os }}-${{ runner.arch }}-py${{ matrix.python }}
           path: ".coverage.*"
           include-hidden-files: true
+          overwrite: true
 
       - name: Upload documentation
         if: matrix.session == 'docs-build'
@@ -109,6 +110,7 @@ jobs:
         with:
           name: docs
           path: docs/_build
+          overwrite: true
 
   coverage:
     runs-on: ubuntu-latest
@@ -137,6 +139,13 @@ jobs:
           pipx install --pip-args=--constraint=${{"{{"}} github.workspace {{"}}"}}/.github/workflows/constraints.txt nox
           pipx inject --pip-args=--constraint=${{"{{"}} github.workspace {{"}}"}}/.github/workflows/constraints.txt nox nox-poetry
           nox --version
+
+      - name: Merge Artifacts
+        uses: actions/upload-artifact/merge@v4
+        with:
+          name: coverage-data
+          pattern: coverage-data-*
+          delete-merged: true
 
       - name: Download coverage data
         uses: actions/download-artifact@v3
