@@ -1,10 +1,16 @@
 [paths]
-source = ["src", "*/site-packages"]
-tests = ["tests", "*/tests"]
+source =
+    src
+    */site-packages
+tests =
+    tests
+    */tests
 
 [run]
 branch = true
-source = ["{{cookiecutter.package_name}}", "tests"]
+source =
+    {{cookiecutter.package_name}}
+    tests
 
 [report]
 show_missing = true
