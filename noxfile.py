@@ -8,25 +8,64 @@ import platformdirs
 from nox.sessions import Session
 
 
+python_versions = ["3.12", "3.11", "3.10", "3.9"]
+
 nox.options.sessions = ["docs"]
-owner, repository = "cjolowicz", "cookiecutter-hypermodern-python"
+owner, repository = "56kyle", "cookiecutter-hypermodern-python"
 labels = "cookiecutter", "documentation"
 bump_paths = "README.md", "docs/guide.rst", "docs/index.rst", "docs/quickstart.md"
 
-REPO_ROOT: Path = Path(__file__).parent
-NEXTGEN_STARTER_CACHE_FOLDER: Path = platformdirs.user_cache_path(
+REPO_ROOT: Path = Path(__file__).parent.resolve()
+TEMPLATE_FOLDER: Path = REPO_ROOT / "{{cookiecutter.project_name}}"
+
+
+COOKIECUTTER_HYPERMODERN_PYTHON_CACHE_FOLDER: Path = Path(platformdirs.user_cache_path(
     appname="cookiecutter-hypermodern-python",
     appauthor="56kyle",
     ensure_exists=True
-)
+)).resolve()
 
-PROJECT_DEMOS_FOLDER: Path = NEXTGEN_STARTER_CACHE_FOLDER / "project_demos"
+PROJECT_DEMOS_FOLDER: Path = COOKIECUTTER_HYPERMODERN_PYTHON_CACHE_FOLDER / "project_demos"
 DEFAULT_DEMO_NAME: str = "demo-project"
 
+GENERATE_DEMO_PROJECT_OPTIONS: tuple[str, ...] = (
+    *("--repo-folder", REPO_ROOT),
+    *("--demos-cache-folder", PROJECT_DEMOS_FOLDER),
+    *("--demo-name", DEFAULT_DEMO_NAME)
+)
 
-@nox.session(name="generate-demo-project")
-def generate_demo_project(session: Session) -> Session:
-    pass
+SYNC_POETRY_WITH_DEMO_OPTIONS: tuple[str, ...] = (
+    *("--template-folder", TEMPLATE_FOLDER),
+    *("--demos-cache-folder", PROJECT_DEMOS_FOLDER),
+    *("--demo-name", DEFAULT_DEMO_NAME)
+)
+
+
+@nox.session(name="generate-demo-project", python=python_versions[-1])
+def generate_demo_project(session: Session) -> None:
+    session.install("cookiecutter", "platformdirs", "loguru")
+    session.run("python", "tools/generate-demo-project.py", *GENERATE_DEMO_PROJECT_OPTIONS, external=True)
+
+
+@nox.session(name="sync-poetry-with-demo", python=python_versions[-1])
+def sync_poetry_with_demo(session: Session) -> None:
+    session.install("cookiecutter", "platformdirs", "loguru")
+    session.run("python", "tools/sync-poetry-with-demo.py", *SYNC_POETRY_WITH_DEMO_OPTIONS, external=True)
+
+
+@nox.session(name="poetry-in-demo", python=python_versions[-1])
+def poetry_in_demo(session: Session) -> None:
+    session.install("cookiecutter", "platformdirs", "loguru")
+    session.run("python", "tools/generate-demo-project.py", *GENERATE_DEMO_PROJECT_OPTIONS, external=True)
+    original_dir: Path = Path.cwd()
+    session.cd(original_dir)
+    session.run("python", "tools/sync-poetry-with-demo.py", *SYNC_POETRY_WITH_DEMO_OPTIONS, external=True)
+
+
+@nox.session(name="poetry-update")
+def poetry_update(session: Session) -> None:
+    session._runner.posargs = ["update", *session.posargs]
+    poetry_in_demo(session)
 
 
 @nox.session(name="prepare-release")
