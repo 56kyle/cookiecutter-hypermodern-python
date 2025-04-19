@@ -121,7 +121,6 @@ def precommit(session: Session) -> None:
         "--show-diff-on-failure",
     ]
     session.install(
-        "bandit",
         "black",
         "darglint",
         "ruff",
