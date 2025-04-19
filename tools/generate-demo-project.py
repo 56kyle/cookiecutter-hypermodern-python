@@ -1,34 +1,40 @@
+"""Python script for generating a demo project."""
 import shutil
 import sys
 from pathlib import Path
-
-import shutil
-import sys
 
 import click
 
 from cookiecutter.main import cookiecutter
 from loguru import logger
 
-from tools.util import DEFAULT_DEMO_NAME
-from tools.util import PROJECT_DEMOS_FOLDER
-from tools.util import REPO_ROOT
+
+FOLDER_TYPE: click.Path = click.Path(
+    dir_okay=True,
+    file_okay=False,
+    resolve_path=True,
+    path_type=Path
+)
 
 
-def generate_demo_project() -> Path:
-    """Generates a demo project and returns its Path."""
-    PROJECT_DEMOS_FOLDER.mkdir(exist_ok=True)
-    _remove_any_existing_demo(PROJECT_DEMOS_FOLDER)
+def generate_demo_project(
+    repo_folder: Path,
+    demos_cache_folder: Path,
+    demo_name: str
+) -> Path:
+    """Generates a demo project and returns its root path."""
+    demos_cache_folder.mkdir(exist_ok=True)
+    _remove_any_existing_demo(demos_cache_folder)
     cookiecutter(
-        template=str(REPO_ROOT),
+        template=str(repo_folder),
         no_input=True,
         extra_context={
-            "project_name": DEFAULT_DEMO_NAME,
+            "project_name": demo_name
         },
         overwrite_if_exists=True,
-        output_dir=str(PROJECT_DEMOS_FOLDER)
+        output_dir=str(demos_cache_folder)
     )
-    return PROJECT_DEMOS_FOLDER / DEFAULT_DEMO_NAME
+    return demos_cache_folder / demo_name
 
 
 def _remove_any_existing_demo(parent_path: Path) -> None:
@@ -38,14 +44,21 @@ def _remove_any_existing_demo(parent_path: Path) -> None:
 
 
 @click.command()
-def main() -> None:
-    """Geneates a demo project."""
+@click.option("--repo-folder", "-r", required=True, type=FOLDER_TYPE)
+@click.option("--demos-cache-folder", "-c", required=True, type=FOLDER_TYPE)
+@click.option("--demo-name", "-d", required=True, type=str)
+def main(
+    repo_folder: Path,
+    demos_cache_folder: Path,
+    demo_name: str
+) -> None:
+    """Updates the poetry.lock file."""
     try:
-        generate_demo_project()
+        generate_demo_project(repo_folder=repo_folder, demos_cache_folder=demos_cache_folder, demo_name=demo_name)
     except Exception as error:
         click.secho(f"error: {error}", fg="red")
         sys.exit(1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main(prog_name="generate-demo-project")
