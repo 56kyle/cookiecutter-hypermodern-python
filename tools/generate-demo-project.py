@@ -1,4 +1,5 @@
 """Python script for generating a demo project."""
+
 import shutil
 import sys
 from pathlib import Path
@@ -8,30 +9,19 @@ import click
 from cookiecutter.main import cookiecutter
 
 
-FOLDER_TYPE: click.Path = click.Path(
-    dir_okay=True,
-    file_okay=False,
-    resolve_path=True,
-    path_type=Path
-)
+FOLDER_TYPE: click.Path = click.Path(dir_okay=True, file_okay=False, resolve_path=True, path_type=Path)
 
 
-def generate_demo_project(
-    repo_folder: Path,
-    demos_cache_folder: Path,
-    demo_name: str
-) -> Path:
+def generate_demo_project(repo_folder: Path, demos_cache_folder: Path, demo_name: str) -> Path:
     """Generates a demo project and returns its root path."""
     demos_cache_folder.mkdir(exist_ok=True)
     _remove_any_existing_demo(demos_cache_folder)
     cookiecutter(
         template=str(repo_folder),
         no_input=True,
-        extra_context={
-            "project_name": demo_name
-        },
+        extra_context={"project_name": demo_name},
         overwrite_if_exists=True,
-        output_dir=str(demos_cache_folder)
+        output_dir=str(demos_cache_folder),
     )
     return demos_cache_folder / demo_name
 
@@ -46,11 +36,7 @@ def _remove_any_existing_demo(parent_path: Path) -> None:
 @click.option("--repo-folder", "-r", required=True, type=FOLDER_TYPE)
 @click.option("--demos-cache-folder", "-c", required=True, type=FOLDER_TYPE)
 @click.option("--demo-name", "-d", required=True, type=str)
-def main(
-    repo_folder: Path,
-    demos_cache_folder: Path,
-    demo_name: str
-) -> None:
+def main(repo_folder: Path, demos_cache_folder: Path, demo_name: str) -> None:
     """Updates the poetry.lock file."""
     try:
         generate_demo_project(repo_folder=repo_folder, demos_cache_folder=demos_cache_folder, demo_name=demo_name)
