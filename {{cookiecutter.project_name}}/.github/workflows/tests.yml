@@ -144,7 +144,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: coverage-data-*
-          merge-multiple: 'true'
+          merge-multiple: "true"
 
       - name: Combine coverage data and display human readable report
         run: |
