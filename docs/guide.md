@@ -2666,10 +2666,10 @@ You can also read the articles on [this blog][hypermodern python blog].
 [nox]: https://nox.thea.codes/
 [package metadata]: https://packaging.python.org/en/latest/specifications/core-metadata/
 [pep 257]: http://www.python.org/dev/peps/pep-0257/
-[pep 440]: https://www.python.org/dev/peps/pep-0440/
-[pep 517]: https://www.python.org/dev/peps/pep-0517/
-[pep 518]: https://www.python.org/dev/peps/pep-0518/
-[pep 561]: https://www.python.org/dev/peps/pep-0561/
+[pep 440]: https://peps.python.org/pep-0440/
+[pep 517]: https://peps.python.org/pep-0517/
+[pep 518]: https://peps.python.org/pep-0518/
+[pep 561]: https://peps.python.org/pep-0561/
 [pep 8]: http://www.python.org/dev/peps/pep-0008/
 [pep8-naming codes]: https://github.com/pycqa/pep8-naming#pep-8-naming-conventions
 [pep8-naming]: https://github.com/pycqa/pep8-naming
@@ -2740,6 +2740,6 @@ You can also read the articles on [this blog][hypermodern python blog].
 [versions and constraints]: https://python-poetry.org/docs/dependency-specification/
 [virtual environment]: https://docs.python.org/3/tutorial/venv.html
 [virtualenv]: https://virtualenv.pypa.io/
-[wheel]: https://www.python.org/dev/peps/pep-0427/
+[wheel]: https://peps.python.org/pep-0427/
 [xdoctest]: https://github.com/Erotemic/xdoctest
 [yaml]: https://yaml.org/
