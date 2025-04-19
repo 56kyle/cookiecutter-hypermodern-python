@@ -27,6 +27,7 @@ COOKIECUTTER_HYPERMODERN_PYTHON_CACHE_FOLDER: Path = Path(platformdirs.user_cach
 
 PROJECT_DEMOS_FOLDER: Path = COOKIECUTTER_HYPERMODERN_PYTHON_CACHE_FOLDER / "project_demos"
 DEFAULT_DEMO_NAME: str = "demo-project"
+DEMO_ROOT_FOLDER: Path = PROJECT_DEMOS_FOLDER / DEFAULT_DEMO_NAME
 
 GENERATE_DEMO_PROJECT_OPTIONS: tuple[str, ...] = (
     *("--repo-folder", REPO_ROOT),
@@ -58,12 +59,22 @@ def poetry_in_demo(session: Session) -> None:
     session.install("cookiecutter", "platformdirs", "loguru")
     session.run("python", "tools/generate-demo-project.py", *GENERATE_DEMO_PROJECT_OPTIONS, external=True)
     original_dir: Path = Path.cwd()
+    session.cd(DEMO_ROOT_FOLDER)
+    session.run("poetry", *session.posargs)
     session.cd(original_dir)
     session.run("python", "tools/sync-poetry-with-demo.py", *SYNC_POETRY_WITH_DEMO_OPTIONS, external=True)
 
 
+@nox.session(name="poetry-lock")
+def poetry_lock(session: Session) -> None:
+    """Shorthand for poetry-in-demo -- lock."""
+    session._runner.posargs = ["lock", *session.posargs]
+    poetry_in_demo(session)
+
+
 @nox.session(name="poetry-update")
 def poetry_update(session: Session) -> None:
+    """Shorthand for poetry-in-demo -- update."""
     session._runner.posargs = ["update", *session.posargs]
     poetry_in_demo(session)
 
