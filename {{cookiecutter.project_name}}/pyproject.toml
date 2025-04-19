@@ -52,13 +52,11 @@ typeguard = ">=2.13.3"
 xdoctest = {extras = ["colors"], version = ">=0.15.10"}
 myst-parser = {version = ">=0.16.1"}
 
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.11.5"
+
 [tool.poetry.scripts]
 {{cookiecutter.project_name}} = "{{cookiecutter.package_name}}.__main__:main"
-
-[tool.isort]
-profile = "black"
-force_single_line = true
-lines_after_imports = 2
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
