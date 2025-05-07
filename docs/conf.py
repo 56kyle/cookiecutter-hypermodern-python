@@ -1,10 +1,11 @@
 """Sphinx configuration."""
+
 from datetime import datetime
 
 
 project = "Hypermodern Python Cookiecutter"
 author = "Claudio Jolowicz"
-copyright = f"{datetime.now().year}, {author}"
+copyright = f"{datetime.now().year}, {author}"  # noqa: A001
 extensions = ["sphinx.ext.intersphinx", "myst_parser"]
 intersphinx_mapping = {"mypy": ("https://mypy.readthedocs.io/en/stable/", None)}
 language = "en"

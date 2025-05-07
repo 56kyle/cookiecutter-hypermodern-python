@@ -52,16 +52,11 @@ def main() -> None:
         if package["name"] in dependencies
     }
 
-    table = {
-        format_dependency(dependency): descriptions[dependency]
-        for dependency in sorted(dependencies)
-    }
+    table = {format_dependency(dependency): descriptions[dependency] for dependency in sorted(dependencies)}
 
     width = max(len(name) for name in table)
     width2 = max(len(description) for description in table.values())
-    separator = LINE_FORMAT.format(
-        name="=" * width, width=width, description="=" * width2
-    )
+    separator = LINE_FORMAT.format(name="=" * width, width=width, description="=" * width2)
 
     print(separator)
 
