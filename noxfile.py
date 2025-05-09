@@ -10,7 +10,7 @@ import platformdirs
 from nox.sessions import Session
 
 
-python_versions = ["3.12", "3.11", "3.10", "3.9"]
+python_versions = ["3.13", "3.12", "3.11", "3.10", "3.9"]
 
 nox.options.sessions = ["docs"]
 owner, repository = "56kyle", "cookiecutter-hypermodern-python"
