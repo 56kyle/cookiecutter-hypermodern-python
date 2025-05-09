@@ -98,7 +98,7 @@ python -VV
 py -VV
 ```
 
-Both of these commands should display the latest Python version, 3.12.
+Both of these commands should display the latest Python version, 3.13.
 
 For local testing with multiple Python versions,
 repeat these steps for the latest bugfix releases of Python 3.9+,
@@ -137,13 +137,14 @@ Install the Python build dependencies for your platform,
 using one of the commands listed in the [official instructions][pyenv wiki].
 
 Install the latest point release of every supported Python version.
-This project template supports Python 3.9, 3.10, 3.11, and 3.12.
+This project template supports Python 3.9, 3.10, 3.11, 3.12, and 3.13.
 
 ```console
 $ pyenv install 3.9.13
 $ pyenv install 3.10.11
 $ pyenv install 3.11.8
-$ pyenv install 3.12.2
+$ pyenv install 3.12.10
+$ pyenv install 3.13.3
 ```
 
 After creating your project (see [below](creating-a-project)),
@@ -151,7 +152,7 @@ you can make these Python versions accessible in the project directory,
 using the following command:
 
 ```console
-$ pyenv local 3.12.2 3.11.8 3.10.11 3.9.13
+$ pyenv local 3.13.3 3.12.10 3.11.8 3.10.11 3.9.13
 ```
 
 The first version listed is the one used when you type plain `python`.
@@ -980,10 +981,11 @@ $ poetry env use 3.9
 $ poetry env use 3.10
 $ poetry env use 3.11
 $ poetry env use 3.12
+$ poetry env use 3.13
 ```
 
 Only one Poetry environment can be active at any time.
-Note that `3.12` comes last,
+Note that `3.13` comes last,
 to ensure that the current Python release is the active environment.
 Install your package with `poetry install` into each environment after creating it.
 
@@ -1156,7 +1158,7 @@ For example, the following may be more practical during development
 (this will only run tests and type checks, on the current Python release):
 
 ```console
-$ nox -p 3.12 -rs tests mypy
+$ nox -p 3.13 -rs tests mypy
 ```
 
 Many sessions accept additional options after `--` separator.
@@ -1182,39 +1184,39 @@ The following table gives an overview of the available Nox sessions:
   - Default
 - - [coverage](the-coverage-session)
   - Report coverage with [Coverage.py]
-  - `3.12`
+  - `3.13`
   - (✓)
 - - [docs](the-docs-session)
   - Build and serve [Sphinx] documentation
-  - `3.12`
+  - `3.13`
   -
 - - [docs-build](the-docs-build-session)
   - Build [Sphinx] documentation
-  - `3.12`
+  - `3.13`
   - ✓
 - - [mypy](the-mypy-session)
   - Type-check with [mypy]
-  - `3.9` … `3.12`
+  - `3.9` … `3.13`
   - ✓
 - - [pre-commit](the-pre-commit-session)
   - Lint with [pre-commit]
-  - `3.12`
+  - `3.13`
   - ✓
 - - [safety](the-safety-session)
   - Scan dependencies with [Safety]
-  - `3.12`
+  - `3.13`
   - ✓
 - - [tests](the-tests-session)
   - Run tests with [pytest]
-  - `3.9` … `3.12`
+  - `3.9` … `3.13`
   - ✓
 - - [typeguard](the-typeguard-session)
   - Type-check with [Typeguard]
-  - `3.12`
+  - `3.13`
   - ✓
 - - [xdoctest](the-xdoctest-session)
   - Run examples with [xdoctest]
-  - `3.9` … `3.12`
+  - `3.9` … `3.13`
   - ✓
 
 :::
@@ -1274,7 +1276,7 @@ For example, the following command runs mypy
 using the current stable release of Python:
 
 ```console
-$ nox --session=mypy --python=3.12
+$ nox --session=mypy --python=3.13
 ```
 
 Use the separator `--` to pass additional options and arguments to `mypy`.
@@ -1348,7 +1350,7 @@ For example, the following command runs the test suite
 using the current stable release of Python:
 
 ```console
-$ nox --session=tests --python=3.12
+$ nox --session=tests --python=3.13
 ```
 
 Use the separator `--` to pass additional options to `pytest`.
@@ -1475,7 +1477,7 @@ For example, the following command runs the examples
 using the current stable release of Python:
 
 ```console
-$ nox --session=xdoctest --python=3.12
+$ nox --session=xdoctest --python=3.13
 ```
 
 By default, the Nox session uses the `all` subcommand to run all examples.
@@ -2269,28 +2271,28 @@ as shown in the table below:
   - Python versions
 - - [pre-commit](the-pre-commit-session)
   - Ubuntu
-  - 3.12
+  - 3.13
 - - [safety](the-safety-session)
   - Ubuntu
-  - 3.12
+  - 3.13
 - - [mypy](the-mypy-session)
   - Ubuntu
-  - 3.12, 3.11, 3.10, 3.9
+  - 3.13, 3.12, 3.11, 3.10, 3.9
 - - [tests](the-tests-session)
   - Ubuntu
-  - 3.12, 3.11, 3.10, 3.9
+  - 3.13, 3.12, 3.11, 3.10, 3.9
 - - [tests](the-tests-session)
   - Windows
-  - 3.12
+  - 3.13
 - - [tests](the-tests-session)
   - macOS
-  - 3.12
+  - 3.13
 - - [coverage](the-coverage-session)
   - Ubuntu
-  - 3.12
+  - 3.13
 - - [docs-build](the-docs-build-session)
   - Ubuntu
-  - 3.12
+  - 3.13
 
 :::
 
